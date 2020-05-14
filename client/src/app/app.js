@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { AddBook, BooksHead, BooksData } from './appView';
+import { AddBook, BooksTable } from './appView';
 
 class App extends Component {
     constructor(props) {
@@ -33,6 +33,10 @@ class App extends Component {
             });
     };
 
+    clearForm = () => {
+        this.initState({ ...this.book }, true, 0, -1);
+    };
+
     onChange = (e) => {
         const { value, name } = e.target;
         const book = this.state.book;
@@ -44,7 +48,6 @@ class App extends Component {
         axios
             .delete(`http://localhost:4000/books/${id}`)
             .then((res) => {
-                console.log(res.data);
                 const books = this.state.books;
                 books.splice(i, 1);
                 this.setState({ books: books });
@@ -80,7 +83,7 @@ class App extends Component {
                 const books = this.state.books;
                 books[this.state.index] = res.data.data;
                 this.setState({ books: books });
-                this.initState({ ...this.book }, true, 0, -1);
+                this.clearForm();
             })
             .catch((err) => {
                 console.log(err);
@@ -104,15 +107,17 @@ class App extends Component {
     render() {
         return (
             <div>
-                <AddBook book={this.state.book} onChange={this.onChange} onSubmit={this.onSubmit} />
+                <AddBook
+                    book={this.state.book}
+                    onChange={this.onChange}
+                    onClear={this.clearForm}
+                    onSubmit={this.onSubmit}
+                />
 
                 <hr />
 
                 <h2>Availible Books</h2>
-                <table>
-                    <BooksHead />
-                    <BooksData books={this.state.books} onRemove={this.onRemove} onEdit={this.onEdit} />
-                </table>
+                <BooksTable books={this.state.books} onRemove={this.onRemove} onEdit={this.onEdit} />
             </div>
         );
     }
