@@ -28,17 +28,21 @@ const wpconfig = {
         ],
     },
     devServer: {
-        port: 7000,
+        port: 9000,
+        // because it is docker-machine used
         host: '0.0.0.0',
-        //     hot: true,
-        //     // open: true
-        //     historyApiFallback: true,
+        hot: true, // Activate hot loading
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: `${SRC_DIR}/index.html`,
         }),
     ],
+    // Necessary for file changes inside the bind mount to get picked up
+    watchOptions: {
+        aggregateTimeout: 200,
+        poll: 1000,
+    },
 };
 
 module.exports = wpconfig;

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 
+const { MONGO_URI } = config;
+
 // mongoose options
 const options = {
     useNewUrlParser: true,
@@ -12,15 +14,12 @@ const options = {
     bufferMaxEntries: 0,
 };
 
-const { mongo } = config;
-const URI = `mongodb://${mongo.HOST}:${mongo.PORT}/${mongo.DB}`;
-
 // connect to mongo DB
-mongoose.connect(URI, options);
+mongoose.connect(MONGO_URI, options);
 
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, `Mongodb Connection Error: ${URI}`));
+db.on('error', console.error.bind(console, `Mongodb Connection Error: ${MONGO_URI}`));
 db.once('open', function () {
-    console.log(`Connection path: ${URI}`);
+    console.log(`Connection path: ${MONGO_URI}`);
     console.log(`MongoDB database connection established successfully.`);
 });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { AddBook, BooksTable } from './appView';
+import Config from '../../config';
 
 class App extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class App extends Component {
 
     componentDidMount = () => {
         axios
-            .get('http://localhost:4000/books')
+            .get(`${Config.SERVER_URI}/books`)
             .then((res) => {
                 this.setState({ books: res.data.data });
             })
@@ -46,7 +47,7 @@ class App extends Component {
 
     onRemove = (id, i) => {
         axios
-            .delete(`http://localhost:4000/books/${id}`)
+            .delete(`${Config.SERVER_URI}/books/${id}`)
             .then((res) => {
                 const books = this.state.books;
                 books.splice(i, 1);
@@ -78,7 +79,7 @@ class App extends Component {
 
     doUpdate = () => {
         axios
-            .patch(`http://localhost:4000/books/${this.state.bookId}`, this.state.book)
+            .patch(`${Config.SERVER_URI}/books/${this.state.bookId}`, this.state.book)
             .then((res) => {
                 const books = this.state.books;
                 books[this.state.index] = res.data.data;
@@ -92,7 +93,7 @@ class App extends Component {
 
     doSave = () => {
         axios
-            .post('http://localhost:4000/books', this.state.book)
+            .post(`${Config.SERVER_URI}/books`, this.state.book)
             .then((res) => {
                 const books = this.state.books;
                 books.unshift(res.data.data);

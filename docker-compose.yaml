@@ -1,0 +1,49 @@
+version: '3'
+services:
+    ############################
+    ### SETUP CLIENT CONTAINER
+    ############################
+    client:
+        image: node:latest
+        container_name: mernwd-client-c
+        volumes:
+            # We mount our current app directory . to /usr/src/app in the container.
+            # But for the client container we use app under client subfolder
+            # - ./client:/usr/src/app/client
+            - .:/usr/src/app
+        # We need to tell docker in what directory did we put the code in.
+        working_dir: /usr/src/app
+        # Run yarn in subfolder client
+        command: yarn --cwd client dev
+        ports:
+            - 9000:9000
+
+    ############################
+    ### SETUP SERVER CONTAINER
+    ############################
+    server:
+        image: node:latest
+        container_name: mernwd-server-c
+        volumes:
+            # We mount our current app directory . to /usr/src/app in the container.
+            # But for the server container we use app under server subfolder
+            # - ./server:/usr/src/app/server
+            - .:/usr/src/app
+        # We need to tell docker in what directory did we put the code in.
+        working_dir: /usr/src/app
+        # Run yarn in subfolder server
+        command: yarn --cwd server dev
+        ports:
+            - 4000:4000
+
+    ############################
+    ### SETUP MONGODB CONTAINER
+    ############################
+    mongodb:
+        image: mongo
+        container_name: mernwd-mongodb-c
+        volumes:
+            - /data/db
+        ports:
+            - 27017:27017
+        # hostname: mongo

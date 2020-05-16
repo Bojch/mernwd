@@ -1,0 +1,18 @@
+version: '2'
+services:
+    base:
+        image: node:latest
+        volumes:
+            # A use of “external volume” instead of the local volume now is isolated completely from local.
+            - nodemodules:/usr/src/app/server/node_modules
+            # We mount our current directory . to /usr/src/app/server in the container.
+            - .:/usr/src/app/server
+        # We need to tell docker in what directory did we put the code in.
+        working_dir: /usr/src/app/server
+    install:
+        extends:
+            service: base
+        command: yarn install
+volumes:
+    nodemodules:
+        external: true

@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const config = require('./config');
 
+const { PORT } = config;
+
 // invoke an instance of express application
 const app = express();
 
@@ -25,6 +27,6 @@ app.use(bodyParser.json());
 const bookRoutes = require('./src/routes/book.router');
 app.use('/books', bookRoutes);
 
-app.listen(config.PORT, function () {
-    console.log(`Server is running on Port: ${config.PORT}`);
+app.listen(PORT, function () {
+    console.log(`Server is running on Port: ${PORT}`);
 });
