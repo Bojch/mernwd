@@ -32,6 +32,7 @@ const wpconfig = {
         // because it is docker-machine used
         host: '0.0.0.0',
         hot: true, // Activate hot loading
+        historyApiFallback: true, // Webpack Dev Server to redirect all server requests to index.html.
     },
     plugins: [
         new HtmlWebpackPlugin({
