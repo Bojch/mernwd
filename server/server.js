@@ -1,7 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const config = require('./config');
+const allowHeaders = require('./src/middleware/allowHeaders');
 
 const { PORT } = config;
 
@@ -11,22 +11,20 @@ const app = express();
 // Our DB Configuration
 require('./src/db');
 
-// here we want to let the server know that we should expect and allow a header with the content-type of 'Authorization -> [x-access-token]'
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Headers', 'Content-type,x-access-token');
-    next();
-});
+// Init allowed headers Middleware
+app.use(allowHeaders);
 
+// Init Middleware to allows AJAX requests to skip the Same-origin policy
+// and access resources from remote hosts.
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+// Body Parser Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // ----------------------------------------------------------
 // routings
 // ----------------------------------------------------------
-const bookRoutes = require('./src/routes/book.router');
-app.use('/books', bookRoutes);
+app.use('/books', require('./src/routes/book.router'));
 
-app.listen(PORT, function () {
-    console.log(`Server is running on Port: ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server is running on Port: ${PORT}`));
