@@ -1,7 +1,15 @@
-const config = require('../config.js');
-
-const { PORT, HOST } = config;
+const client = {
+    PORT: 9000,
+    // because it is docker-machine used
+    HOST: '0.0.0.0',
+};
+const server = {
+    PORT: 4000,
+    HOST: '192.168.99.100',
+};
 
 module.exports = {
-    SERVER_URI: `http://${HOST}:${PORT}`,
+    PORT: client.PORT,
+    HOST: client.HOST,
+    SERVER_URI: `http://${server.HOST}:${server.PORT}`,
 };

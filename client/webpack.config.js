@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { PORT, HOST } = require('./config');
 
 const SRC_DIR = path.resolve(__dirname, 'src');
 const PUBLIC_DIR = path.resolve(__dirname, 'public');
@@ -28,9 +29,8 @@ const wpconfig = {
         ],
     },
     devServer: {
-        port: 9000,
-        // because it is docker-machine used
-        host: '0.0.0.0',
+        port: PORT,
+        host: HOST,
         hot: true, // Activate hot loading
         historyApiFallback: true, // Webpack Dev Server to redirect all server requests to index.html.
     },

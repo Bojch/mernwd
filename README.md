@@ -44,3 +44,9 @@ To run the app just use the command:
 ```
 make dev
 ```
+
+## To view the App in browser Open the link:
+
+```
+http://192.168.99.100:3000
+```

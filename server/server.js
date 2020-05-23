@@ -1,9 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const config = require('./config');
+const { PORT } = require('./config');
 const allowHeaders = require('./src/middleware/allowHeaders');
-
-const { PORT } = config;
 
 // invoke an instance of express application
 const app = express();

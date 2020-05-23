@@ -1,10 +1,12 @@
-const config = require('../config.js');
+const HOST = '192.168.99.100';
 
-const { HOST, PORT } = config;
-const MONGO_PORT = 27017;
-const MONGO_DB = 'mernd';
+const mongodb = {
+    PORT: 27017,
+    HOST: HOST,
+    DB: 'mernd',
+};
 
 module.exports = {
-    PORT: PORT,
-    MONGO_URI: `mongodb://${HOST}:${MONGO_PORT}/${MONGO_DB}`,
+    PORT: 4000,
+    MONGO_URI: `mongodb://${mongodb.HOST}:${mongodb.PORT}/${mongodb.DB}`,
 };
