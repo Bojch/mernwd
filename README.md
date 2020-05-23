@@ -47,6 +47,4 @@ make dev
 
 ## To view the App in browser Open the link:
 
-```
-http://192.168.99.100:3000
-```
+http://192.168.99.100:9000

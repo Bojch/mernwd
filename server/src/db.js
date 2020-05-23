@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('../config');
-
-const { MONGO_URI } = config;
+const { MONGO_URI } = require('../config');
 
 // mongoose options
 const options = {
@@ -17,9 +15,8 @@ const options = {
 // connect to mongo DB
 mongoose.connect(MONGO_URI, options);
 
+// get connection
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, `Mongodb Connection Error: ${MONGO_URI}`));
-db.once('open', function () {
-    console.log(`Connection path: ${MONGO_URI}`);
-    console.log(`MongoDB database connection established successfully.`);
-});
+
+db.on('error', console.error.bind(console, `MongoDB Connection Error: ${MONGO_URI}`));
+db.once('open', () => console.log(`MongoDB database connection successfully established at: ${MONGO_URI}`));

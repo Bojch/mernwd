@@ -1,78 +1,60 @@
 const express = require('express');
 const BookRouter = express.Router();
 const BookModel = require('../models/book.model');
+const asw = require('express-async-handler');
 
 // Get all books
-BookRouter.get('/', (req, res) => {
-    BookModel.find()
-        .sort({ _id: -1 })
-        .exec()
-        .then((books) => {
-            res.status(200).send({
-                success: true,
-                data: books,
-            });
-        })
-        .catch((err) => {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
+BookRouter.get(
+    '/',
+    asw(async (req, res) => {
+        const books = await BookModel.find().sort({ _id: -1 }).exec();
+
+        res.status(200).send({
+            success: true,
+            data: books,
         });
-});
+    }),
+);
 
 // Add single Book
-BookRouter.post('/', function (req, res) {
-    BookModel.create(req.body)
-        .then((book) => {
-            res.status(201).send({
-                success: true,
-                data: book,
-                message: 'Book added successfully.',
-            });
-        })
-        .catch((err) => {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
+BookRouter.post(
+    '/',
+    asw(async (req, res) => {
+        const book = await BookModel.create(req.body);
+
+        res.status(201).send({
+            success: true,
+            data: book,
+            message: 'Book added successfully.',
         });
-});
+    }),
+);
 
 // Delete single Book
-BookRouter.delete('/:id', (req, res) => {
-    BookModel.findByIdAndDelete(req.params.id)
-        .then((result) => {
-            res.status(200).send({
-                success: true,
-                message: 'Book deleted successfully',
-            });
-        })
-        .catch((err) => {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
+BookRouter.delete(
+    '/:id',
+    asw(async (req, res) => {
+        await BookModel.findByIdAndDelete(req.params.id);
+
+        res.status(200).send({
+            success: true,
+            message: 'Book deleted successfully',
         });
-});
+    }),
+);
 
 // Edit Single Book
-BookRouter.patch('/:id', (req, res) => {
-    const fieldsToUpdate = req.body;
-    BookModel.findByIdAndUpdate(req.params.id, { $set: fieldsToUpdate }, { new: true })
-        .then((result) => {
-            res.status(200).send({
-                success: true,
-                data: result,
-                message: 'Book updated successfully',
-            });
-        })
-        .catch((err) => {
-            res.status(400).send({
-                success: false,
-                error: err.message,
-            });
+BookRouter.patch(
+    '/:id',
+    asw(async (req, res) => {
+        const fieldsToUpdate = req.body;
+        const book = await BookModel.findByIdAndUpdate(req.params.id, { $set: fieldsToUpdate }, { new: true });
+        res.status(200).send({
+            success: true,
+            data: book,
+            message: 'Book updated successfully',
         });
-});
+    }),
+);
 
 module.exports = BookRouter;
